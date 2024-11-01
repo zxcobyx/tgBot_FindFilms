@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<title> rutracker.org</title>
+<link href="/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="/manifest.json" rel="manifest"/>
+<link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon"/>
+<meta content="#2b5797" name="msapplication-TileColor"/>
+<meta content="/mstile-144x144.png" name="msapplication-TileImage"/>
+<meta content="#ffffff" name="theme-color"/>
+<link href="https://static.rutracker.cc/opensearch.xml" rel="search" title="Поиск на RuTracker.org" type="application/opensearchdescription+xml"/>
+<script>
+window.BB = {
+	cur_domain: location.hostname.replace(/.*?(([a-z0-9-]+\.){1,2}[a-z0-9-]+)$/, '$1'),
+	form_token: '',
+	opt_js: {},
+
+	IS_GUEST: !!'1',
+	IMG_URL: 'https://static.rutracker.cc/templates/v1/images',
+	SMILES_URL: 'https://static.rutracker.cc/smiles',
+	catId: 0,
+	FORUM_ID: 0,
+	parentForumId: 0,
+		COOKIE_MARK: 'bb_mark_read',
+	};
+BB.cookie_defaults = {
+	domain: '.' + BB.cur_domain,
+	path: "/forum/",
+};
+</script>
+<link href="https://static.rutracker.cc/templates/v1/min/10e5495ef26cfc18546ad21a308407ea.all.min.css" rel="stylesheet"/>
+<script src="https://static.rutracker.cc/templates/v1/min/89cb07925b0747ebeb4acf70951adc9d.lib.min.js"></script>
+<script src="https://static.rutracker.cc/templates/v1/min/720790280e312c51851401ebc4d22179.bb.min.js"></script>
+<style>
+.invisible-el {
+	/* @include element-invisible(); */
+	clip: rect(1px, 1px, 1px, 1px);
+	height: 1px;
+	overflow: hidden;
+	position: absolute !important;
+	width: 1px;
+}
+.hidden, .menu-sub, #ajax-loading, #ajax-error, var.ajax-params, #modal-blocker, .q-post {
+	display: none;
+}
+/**/
+#logo {
+	min-height: auto;
+}
+/**/
+/* temp */
+/* temp end */
+</style>
+<noscript>
+<style>
+	.sp-body {
+		display: block; /* for bots */
+	}
+	</style>
+</noscript>
+</head>
+<body class="" style="">
+<div class="invisible-el" id="invisible-heap"></div>
+<div class="invisible-el" id="preload"></div>
+<div id="misc-hidden-elements" style="display: none;">
+<form accept-charset="utf-8" action="search_cse.php" id="cse-search-box">
+<input id="cse-text-match" name="q" size="60" type="text" value=""/>
+<input type="submit" value="Поиск в Google"/>
+</form>
+</div>
+<div id="body_container">
+<script>
+	if (top != self && !self.location.hostname.match(BB.allowed_translator_hosts)) {
+		$(function () {
+			$('body').html('<h1 style="text-align: center;"><br><br>Похоже, вас пытаются обмануть<br>frame\'s hostname: ' + self.location.hostname + '</h1>');
+			throw new Error('in frame');
+		});
+	}
+		</script>
+<div id="page_container">
+<div class="hide-for-print" id="page_header">
+<div class="site-nav clearfix" id="main-nav">
+<ul class="inlined middot-separated floatL">
+<li>
+<a href="index.php"><b>Главная</b></a>
+</li>
+<li>
+<a href="tracker.php" rel="nofollow"><b>Трекер</b></a>
+</li>
+<li>
+<a href="search.php" rel="nofollow"><b>Поиск</b></a>
+</li>
+<li>
+<a href="groupcp.php" rel="nofollow"><b>Группы</b></a>
+</li>
+<li>
+<a href="https://rutracker.wiki/" target="_blank"><b>FAQ</b></a>
+</li>
+<li>
+<a href="viewforum.php?f=1649" style="color: #7b1fa2;"><b>VPN</b></a>
+</li>
+<li>
+<a href="viewtopic.php?t=1045"><b>Правила</b></a>
+</li>
+</ul>
+</div>
+<!--/main-nav-->
+<div id="logo">
+<table style="">
+<tr>
+<td id="logo-td" style="padding: 3px 7px 3px 15px;">
+<a class="site-logo-link" href="index.php">
+<img alt="logo" class="site-logo" src="https://static.rutracker.cc/logo/logo-3.svg" style=""/>
+</a>
+</td>
+<td class="tCenter w100" style="padding: 6px 10px 0 3px;">
+</td>
+</tr>
+</table>
+</div>
+<!--/logo-->
+<div class="topmenu">
+<table class="w100">
+<tr>
+<td class="tCenter pad_2 nowrap">
+<div>
+<a href="profile.php?mode=register" rel="nofollow"><b>Регистрация</b></a>
+								 · 
+								<a href="#" onclick="BB.toggle_top_login(); return false;" tabindex="5"><b>Вход</b></a>
+<div id="top-login-box">
+<form action="tracker.php" id="quick-search-guest" method="get">
+<input accesskey="q" id="search-text-guest" name="nm" tabindex="1" type="text" value=""/>
+<input tabindex="2" type="submit" value="поиск"/>
+</form>
+<form action="login.php" id="login-form-quick" method="post" style="display: none;">
+<input name="redirect" type="hidden" value="tracker.php?nm=%D1%84%D0%BE%D1%80%D1%81%D0%B0%D0%B6+8"/>
+<input accesskey="l" id="top-login-uname" name="login_username" placeholder="имя" tabindex="1" type="text"/>
+<input id="top-login-pwd" name="login_password" placeholder="пароль" tabindex="2" type="password"/>
+<label class="login-ssl-block" style="display: none;" title="Защищенное соединение">
+<input checked="" class="login-ssl" tabindex="3" type="checkbox"/>SSL
+										</label>
+<input id="top-login-btn" name="login" tabindex="4" type="submit" value="вход"/>
+</form>
+</div>
+<a href="profile.php?mode=sendpassword" rel="nofollow">Забыли имя или пароль?</a>
+</div>
+</td>
+</tr>
+</table>
+</div><!--/topmenu-->
+</div>
+<!--/page_header-->
+<div id="page_content">
+<table style="width: 100%; border: none;">
+<tr>
+<td id="main_content">
+<div id="main_content_wrap">
+<!--/page_header.tpl-->
+<script>
+$(function () {
+	var tab_idx = 100;
+	$('input,select,textarea', '#login-form-full').not(':hidden').each(function () {
+		$(this).attr({ tabindex: ++tab_idx });
+	});
+});
+</script>
+<h1 class="pagetitle">Вход</h1>
+<form action="login.php" id="login-form-full" method="post">
+<input name="redirect" type="hidden" value="tracker.php?nm=%D1%84%D0%BE%D1%80%D1%81%D0%B0%D0%B6+8"/>
+<p class="nav"><a href="index.php">Главная</a></p>
+<table class="forumline">
+<tr>
+<th>Вход</th>
+</tr>
+<tr>
+<td class="row1">
+<h4 class="tCenter mrg_16">Введите ваше имя и пароль</h4>
+<div class="mrg_16">
+<table class="borderless bCenter">
+<tr>
+<td class="tRight" style="width: 31%;">Имя:</td>
+<td style="width: 69%;">
+<input maxlength="30" name="login_username" size="25" type="text" value=""/>
+</td>
+</tr>
+<tr>
+<td class="tRight">Пароль:</td>
+<td>
+<input maxlength="32" name="login_password" size="25" type="password" value=""/>
+</td>
+</tr>
+<tr class="login-ssl-block" style="display: none;">
+<td class="tCenter" colspan="2">
+<label><input checked="" class="login-ssl" type="checkbox"/> Защищенное соединение</label>
+</td>
+</tr>
+<tr>
+<td class="tCenter pad_8" colspan="2">
+<input class="bold long" name="login" type="submit" value="Вход"/>
+</td>
+</tr>
+<tr>
+<td class="tCenter med" colspan="2">В вашем браузере должны быть включены куки и JavaScript</td>
+</tr>
+<tr>
+<td class="tCenter" colspan="2">
+<a class="med" href="profile.php?mode=register">Регистрация</a>
+						 · 
+						<a class="med" href="profile.php?mode=sendpassword">Забыли имя или пароль?</a>
+</td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+</form>
+</div><!--/main_content_wrap-->
+</td><!--/main_content-->
+</tr>
+</table>
+</div><!--/page_content-->
+<!--page_footer-->
+<div class="hide-for-print" id="page_footer">
+<div class="clear"></div>
+<nav id="footer-info-links">
+<div>
+<a href="info.php?show=user_agreement" rel="nofollow">Условия использования</a>
+				·
+				<a href="info.php?show=advert" rel="nofollow">Реклама на сайте</a>
+				·
+				<a href="info.php?show=copyright_holders" rel="nofollow">Для правообладателей</a>
+				·
+				<a href="info.php?show=press" rel="nofollow">Для прессы</a>
+				·
+				<a href="viewtopic.php?t=2234744">Для провайдеров</a>
+<!--&middot;-->
+<!--<a href="http://rutracker.news">Блог</a>-->
+				·
+				<a href="https://rutracker.wiki">Торрентопедия</a>
+</div>
+<div>
+<a href="viewtopic.php?t=1045"><b>Правила</b></a>
+				·
+				<a href="/go/8" rel="nofollow">Кому задать вопрос</a>
+				·
+				<a href="viewforum.php?f=1538">Авторские раздачи</a>
+				·
+				<a href="viewforum.php?f=1289">Конкурсы</a>
+				·
+				<a href="viewforum.php?f=2332">Новости "Хранителей" и "Антикваров"</a>
+				·
+				<a href="#" onclick="return post2url('index.php', {rand_rel: 1});" rel="nofollow">Случайная раздача</a>
+</div>
+</nav>
+<div class="tCenter nowrap" style="margin: 18px 4px 4px 4px;">
+</div>
+<div class="footer-bottom-links">
+<ul class="inlined middot-separated">
+<li><a href="groupcp.php?g=104792" rel="nofollow" target="_blank">Администрация</a></li>
+<li><a href="groupcp.php?g=104787" rel="nofollow" target="_blank">Модераторы</a></li>
+<li><a href="groupcp.php?g=104841" rel="nofollow" target="_blank">Тех. помощь</a></li>
+<li><a href="https://t.me/rutracker_news" rel="nofollow" target="_blank">Telegram-канал</a></li>
+</ul>
+<div class="wide">
+<script>
+					$(function () {
+						var title = "";
+						var src = "https://counter.yadro.ru/hit?t44.1;r" + encodeURIComponent(document.referrer) +
+							((typeof (screen) == "undefined") ? "" : ";s" + screen.width + "*" + screen.height + "*" + (screen.colorDepth ? screen.colorDepth : screen.pixelDepth)) +
+							";u" + encodeURIComponent(document.URL) + ";h" + encodeURIComponent(title.substring(0, 80)) + ";" + Math.random();
+						$('<img src="' + src + '" alt="">').on('load', function () {
+							$('#liveinternet').append(this);
+						});
+					});
+					</script>
+<a href="https://www.liveinternet.ru/stat/rutracker.org/index.html?lang=ru" id="liveinternet" target="_blank"></a>
+</div>
+<ul class="inlined middot-separated">
+</ul>
+</div>
+</div><!--/page_footer-->
+</div><!--/page_container-->
+<div id="ajax-loading"><b>Loading...</b></div>
+<div id="ajax-error"><b>Error</b></div>
+<style>
+#bb-alert-box {
+	width: auto;
+	max-width: 800px;
+	line-height: 18px;
+	display: none;
+}
+#bb-alert-msg {
+	min-width: 400px;
+	max-height: 400px;
+	margin: 50px 20px;
+	padding: 10px;
+	overflow: auto;
+	text-align: center;
+}
+.bb-alert-err {
+	color: #7E0000;
+	background: #FFEEEE;
+	box-shadow: 0 0 20px #B85353;
+	font-weight: bold;
+}
+</style>
+<div id="bb-alert-box">
+<div id="bb-alert-msg"></div>
+</div>
+<div id="modal-blocker"></div>
+<script>
+$(function () {
+	if (!BB.hasET() && BB.getUrlParam('view') !== 'print') {
+		BB.navbar.init();
+	}
+});
+</script>
+<div class="nav-hidden-arrow hide-for-print" id="nav-panel">
+<div class="nav-btn" id="nav-up" title="Вверх">
+<span class="nav-icon"></span>
+</div>
+<div class="nav-btn" id="nav-settings">
+<span class="nav-icon" title="Настройки"></span>
+<ul id="nav-opt-menu">
+<li class="nav-event" data-event="click">Показывать по клику</li>
+<li class="nav-event" data-event="mouseenter">Показывать по наведению</li>
+</ul>
+</div>
+<div class="nav-btn" id="nav-down" title="Вниз">
+<span class="nav-icon"></span>
+</div>
+<div class="nav-hidden-overlay"></div>
+</div>
+</div><!--/body_container-->
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'8dbbcccaaec0a015',t:'MTczMDQ2MzIxOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

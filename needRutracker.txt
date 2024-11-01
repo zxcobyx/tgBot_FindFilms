@@ -1,0 +1,53 @@
+<tr id="trs-tr-6540506" class="tCenter hl-tr" data-topic_id="6540506" role="row">
+	<td id="6540506" class="row1 t-ico">
+        <img src="https://static.rutracker.cc/templates/v1/images/icon_minipost.gif" class="icon1" alt="o">
+    </td>
+    <td class="row1 t-ico" title="проверено">
+        <span class="tor-icon tor-approved">√</span>
+    </td>
+    <td class="row1 f-name-col">
+        <div class="f-name">
+            <a class="gen f ts-text" href="https://rutracker.org/forum/tracker.php?f=796&amp;nm=%F4%EE%F0%F1%E0%E6+8">Неофициальные саундтреки к фильмам и сериалам (lossy)</a>
+        </div>
+    </td>
+    <td class="row4 med tLeft t-title-col tt">
+        <div class="wbr t-title">
+            <a data-topic_id="6540506" class="med tLink tt-text ts-text hl-tags bold tags-initialized" href="viewtopic.php?t=6540506">
+                "Форсаж " 
+                <span class="brackets-pair">(5-8)</span>
+                <span class="brackets-pair">(5 релизов)</span>
+                " / The Fast And The Furious "
+                <span class="brackets-pair">(Fast Five / Fast &amp; Furious 6 / Furious 7 / Fate Of The Furious)</span>
+                <span class="brackets-pair">(Complete Recording Sessions, Bootleg)</span>
+                <span class="brackets-pair">(by Brian Tyler &amp; Lucas Vidal)</span>
+                " - 2011-2017 "
+                <span class="brackets-pair">(2001)</span>
+                ", MP3 "
+                <span class="brackets-pair">(tracks)</span>
+                ", 320 kbps "
+            </a>
+        </div>
+        <div id="tg-6540506" class="t-tags">
+            <span class="tg">Score</span>
+            <span class="tg">Complete Recordings</span>
+            <span class="tg">Expanded</span>
+            <span class="tg">Unofficial</span>
+        </div>
+    </td>
+    <td class="row1 u-name-col">
+        <div class="wbr u-name">
+            <a class="med ts-text" href="tracker.php?pid=49130474">DimoVaz2</a>
+        </div>
+    </td>
+    <td class="row4 small nowrap tor-size" data-ts_text="1343358765">
+        <a class="small tr-dl dl-stub" href="dl.php?t=6540506">1.25&nbsp;GB ↓</a>
+    </td>
+    <td class="row4 nowrap" data-ts_text="3">
+        <b class="seedmed">3</b>
+    </td>
+    <td class="row4 leechmed bold" title="Личи">0</td>
+    <td class="row4 small number-format">98</td>
+    <td class="row4 small nowrap" style="padding: 1px 3px 2px;" data-ts_text="1718753660">
+        <p>19-Июн-24</p>
+    </td>
+</tr>
