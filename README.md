@@ -7,3 +7,6 @@ For start bot:
 
 For drop bot:
 1. Write terminal - sudo systemctl stop transmission-daemon
+
+Dependencies:
+1. pipreqs ./ --ignore .venv --force --encoding=utf-8

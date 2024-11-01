@@ -1,6 +1,4 @@
-python-telegram-bot
-requests
-beautifulsoup4
-schedule
-psutil
-transmission-rpc
+beautifulsoup4==4.12.3
+python-telegram-bot==21.6
+Requests==2.32.3
+transmission_rpc==7.0.11
