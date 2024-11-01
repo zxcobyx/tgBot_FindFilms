@@ -1,4 +1,5 @@
 beautifulsoup4==4.12.3
 python-telegram-bot==21.6
 Requests==2.32.3
+rutracker_api==0.22.92
 transmission_rpc==7.0.11
