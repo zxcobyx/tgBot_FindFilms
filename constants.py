@@ -1,1 +1,0 @@
-BOT_TOKEN: str = "7920043796:AAGarGCwzkGcDfJ14I_Zna1YukiFd3sJjv8"
