@@ -1,4 +1,6 @@
 beautifulsoup4==4.12.3
+clck==1.0.0
+pyshorteners==1.0.1
 python-telegram-bot==21.6
 Requests==2.32.3
 rutracker_api==0.22.92
