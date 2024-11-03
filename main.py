@@ -112,7 +112,9 @@ async def download(update: Update, context: CallbackContext) -> None:
         context.user_data['torrent_index'] = index
         
         # Запрашиваем у пользователя новое имя для торрента
-        '''Добавить кнопку, которая оставит текущее название торрента (стоковое)'''
+        '''
+        Добавить кнопку, которая оставит текущее название торрента (стоковое)
+        '''
         await query.edit_message_text(
             text="Как вы хотите назвать торрент?"
         )
@@ -122,6 +124,10 @@ async def download(update: Update, context: CallbackContext) -> None:
     else:
         await query.edit_message_text("Ошибка: неверный формат данных.")
         return
+
+'''
+Добавить кнопку Обновить статус загрузки в статусе загружающихся торрентов
+'''
 
 async def status(update: Update, context: CallbackContext) -> None:
     """Получаем статус всех загружающихся торрентов."""
@@ -147,7 +153,16 @@ async def status(update: Update, context: CallbackContext) -> None:
         message += f"   Прогресс: {torrent['progress']:.1f}%\n\n"
     
     await update.callback_query.answer()  # Подтверждение нажатия
-    await update.callback_query.edit_message_text(message)
+
+    keyboard_ = [
+        [InlineKeyboardButton("⬅ Назад", callback_data='back_to_start')]
+    ]
+    reply_markup_ = InlineKeyboardMarkup(keyboard_)
+
+    await update.callback_query.edit_message_text(
+        message,
+        reply_markup=reply_markup_
+    )
 
 def main():
     application = Application.builder().token(BOT_TOKEN).build()
