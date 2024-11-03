@@ -18,7 +18,10 @@ async def find_torrent(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 
             button_row.append(InlineKeyboardButton(f"Скачать {i}", callback_data=f"download_{i}_{torrent['magnet_link']}"))
 
-        keyboard = [button_row]
+        keyboard = [
+            button_row,
+            [InlineKeyboardButton("⬅ Назад", callback_data='back_to_start')]    
+        ]
 
         await update.message.reply_text(
             message,

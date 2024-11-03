@@ -1,5 +1,5 @@
 import re
-from telegram import Update, ReplyKeyboardMarkup
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, CallbackContext, MessageHandler, filters, ContextTypes
 from functions.find_torrent import find_torrent
 from constants import BOT_TOKEN
@@ -12,18 +12,50 @@ class States:
 async def start(update: Update, context: CallbackContext) -> None:
     """Отправляем приветственное сообщение и отображаем кнопки."""
     user = update.effective_user
+    keyboard = [
+        [
+            InlineKeyboardButton("Найти торрент", callback_data='find_trnt'),
+            InlineKeyboardButton("Статус", callback_data='status')
+        ]
+    ]
+    
+    reply_markup = InlineKeyboardMarkup(keyboard)
+
     await update.message.reply_text(
-        f"Привет, {user.mention_html()}! Добро пожаловать в бота.",
-        reply_markup=ReplyKeyboardMarkup(
-            [['Найти торрент', 'Статус']],  # Названия кнопок в одной строке
-            one_time_keyboard=True,  # Скрыть клавиатуру после выбора
-            resize_keyboard=True  # Изменить размер клавиатуры для соответствия кнопкам
-        ),
+        f"Привет, {user.mention_html()}!",
+        reply_markup=reply_markup,
+        parse_mode='HTML'
+    )
+
+async def start_callback(update: Update, context: CallbackContext) -> None:
+    """Отправляем приветственное сообщение и отображаем кнопки."""
+    user = update.effective_user
+    keyboard = [
+        [
+            InlineKeyboardButton("🔍 Найти торрент", callback_data='find_trnt'),
+            InlineKeyboardButton("📊 Статус", callback_data='status')
+        ]
+    ]
+    
+    reply_markup = InlineKeyboardMarkup(keyboard)
+
+    await update.callback_query.edit_message_text(
+        f"Привет, {user.mention_html()}!",
+        reply_markup=reply_markup,
         parse_mode='HTML'
     )
 
 async def find_trnt(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    await update.message.reply_text("Что вы хотите найти?")
+    keyboard = [
+        [InlineKeyboardButton("⬅ Назад", callback_data='back_to_start')]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+
+    await update.callback_query.edit_message_text(
+        text="Что вы хотите найти?\nНапишите в чат название, или нажмите кнопку ⬅ Назад",
+        reply_markup=reply_markup
+    )
+
     # Устанавливаем состояние ожидания ответа от пользователя
     context.user_data['state'] = States.WAITING_FOR_TORRENT_QUERY
 
@@ -45,8 +77,14 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
             # Загружаем торрент по URL с новым именем
             await add_torrent_by_url(torrent_url, new_name=new_name)
 
+            keyboard = [
+                [InlineKeyboardButton("⬅ Назад", callback_data='back_to_start')]
+            ]
+            reply_markup = InlineKeyboardMarkup(keyboard)
+
             await update.message.reply_text(
-                text=f"Торрент был успешно загружен под именем '{new_name}'."
+                text=f"Торрент был успешно загружен под именем '{new_name}'.",
+                reply_markup=reply_markup
             )
         except Exception as e:
             await update.message.reply_text(
@@ -56,13 +94,7 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
         # Сбрасываем состояние после обработки имени
         context.user_data['state'] = None
 
-    elif text == 'Найти торрент':
-        await find_trnt(update, context)
-
-    elif text == 'Статус':
-        await status(update, context)
-
-async def download_callback(update: Update, context: CallbackContext) -> None:
+async def download(update: Update, context: CallbackContext) -> None:
     query = update.callback_query
     await query.answer()
 
@@ -80,6 +112,7 @@ async def download_callback(update: Update, context: CallbackContext) -> None:
         context.user_data['torrent_index'] = index
         
         # Запрашиваем у пользователя новое имя для торрента
+        '''Добавить кнопку, которая оставит текущее название торрента (стоковое)'''
         await query.edit_message_text(
             text="Как вы хотите назвать торрент?"
         )
@@ -94,8 +127,17 @@ async def status(update: Update, context: CallbackContext) -> None:
     """Получаем статус всех загружающихся торрентов."""
     torrents_status = get_torrents_status()
     
-    if torrents_status is None:
-        await update.message.reply_text("Нет активных торрентов для загрузки.")
+    if torrents_status is None or len(torrents_status) == 0:
+        await update.callback_query.answer()  # Подтверждение нажатия
+        keyboard = [
+            [InlineKeyboardButton("⬅ Назад", callback_data='back_to_start')]
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+
+        await update.callback_query.edit_message_text(
+            text="Нет активных торрентов для загрузки.",
+            reply_markup=reply_markup
+        )
         return
 
     # Формируем сообщение со статусом каждого торрента
@@ -104,13 +146,22 @@ async def status(update: Update, context: CallbackContext) -> None:
         message += f"{i}: {torrent['name']}\n"
         message += f"   Прогресс: {torrent['progress']:.1f}%\n\n"
     
-    await update.message.reply_text(message)
+    await update.callback_query.answer()  # Подтверждение нажатия
+    await update.callback_query.edit_message_text(message)
 
 def main():
     application = Application.builder().token(BOT_TOKEN).build()
+    
     application.add_handler(CommandHandler("start", start))
+
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
-    application.add_handler(CallbackQueryHandler(download_callback, pattern='^download_'))
+
+    application.add_handler(CallbackQueryHandler(download, pattern='^download_'))
+    application.add_handler(CallbackQueryHandler(find_torrent, pattern='^find_torrent$'))
+    application.add_handler(CallbackQueryHandler(find_trnt, pattern='^find_trnt$'))
+    application.add_handler(CallbackQueryHandler(status, pattern='^status$'))
+    application.add_handler(CallbackQueryHandler(start_callback, pattern='^back_to_start$'))
+
     application.run_polling()
 
 if __name__ == '__main__':
