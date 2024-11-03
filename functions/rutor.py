@@ -1,5 +1,4 @@
 import requests
-from .url_shortener import  shorten_url
 from bs4 import BeautifulSoup
 
 async def search_torrent_rutor(query):

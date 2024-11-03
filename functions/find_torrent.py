@@ -4,10 +4,7 @@ from functions.rutor import search_torrent_rutor
 from functions.rutracker import search_torrent_rutracker
 
 async def find_torrent(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    query = " ".join(context.args)
-
-    best_torrent_rutor = await search_torrent_rutor(query)
-    # best_torrent_rutracker = await search_torrent_rutracker(query)
+    best_torrent_rutor = await search_torrent_rutor(context)
 
     if best_torrent_rutor:
         message = "Найдены лучшие торренты на Rutor:\n\n"
@@ -29,7 +26,8 @@ async def find_torrent(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         )
     else:
         await update.message.reply_text("Не удалось найти торренты по вашему запросу.")
-
+    
+    # best_torrent_rutracker = await search_torrent_rutracker(query)
     # if best_torrent_rutor:
     #     await update.message.reply_text(
     #         f"Найден торрент на Rutor: \n{best_torrent_rutor['title']}\nСиды: {best_torrent_rutor['seeds']}\nСсылка: {best_torrent_rutor['link']}",

@@ -3,7 +3,7 @@ import qbittorrentapi as qbt
 # Создаем экземпляр клиента
 client = qbt.Client(host='localhost:8080', username='admin', password='adminadmin')
 
-async def add_torrent_by_url(_urls: list):
+async def add_torrent_by_url(_urls: list, new_name: str = None):
     """
     Загружает торрент из списка URL в qBittorrent.
     
@@ -13,8 +13,7 @@ async def add_torrent_by_url(_urls: list):
     try:
         print(_urls)
 
-        # Используем метод download для загрузки торрентов
-        result = client.torrents_add(urls=[_urls])
+        result = client.torrents_add(urls=_urls, rename=new_name)
         print(f"Результат добавления торрента: {result}")
     except Exception as e:
         print(f"Произошла ошибка: {str(e)}")
