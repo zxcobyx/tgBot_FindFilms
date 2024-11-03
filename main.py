@@ -3,7 +3,7 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, CallbackContext
 from functions import find_torrent as ft
 from constants import BOT_TOKEN
-from functions.torrent_utils import download_torrent_file, add_torrent, get_torrent_status
+from functions.torrent_utils import add_torrent_by_url, get_torrents_status
 
 async def start(update, context):
     await update.message.reply_text("Привет! Я персональный бот для оптимизации и ускорения работы с медиафайлами. Я умею искать и загружать фильмы с таких торрент-трекеров, как Rutracker и Rutor. Надеюсь, вам понравится пользоваться мной.")
@@ -22,30 +22,35 @@ async def download_callback(update: Update, context: CallbackContext) -> None:
         return
 
     try:
-        # Загружаем торрент-файл
-        torrent_content = await download_torrent_file(torrent_url)
-        if torrent_content:
-            # Добавляем торрент
-            torrent_id = await add_torrent(torrent_content)
-            await query.edit_message_text(
-                text=f"Загрузка торрента {index} началась. ID торрента: {torrent_id}. "
-                     f"Используйте /status {torrent_id} для проверки статуса."
-            )
-        else:
-            await query.edit_message_text("Не удалось загрузить торрент-файл.")
+        if not torrent_url.startswith(('http://', 'https://')):
+            torrent_url = 'https://' + torrent_url.lstrip('/')
+
+        # Загружаем торрент по URL
+        await add_torrent_by_url(torrent_url)  # Передаем список с одним URL
+
+        await query.edit_message_text(
+            text=f"Загрузка торрента {index} началась. Используйте /status {index} для проверки статуса."
+        )
     except Exception as e:
         await query.edit_message_text(
-            text=f"Произошла ошибка при добавлении торрента: {str(e)}"
+            text="Произошла ошибка при добавлении торрента"
         )
 
 async def status(update: Update, context: CallbackContext) -> None:
-    if not context.args:
-        await update.message.reply_text("Пожалуйста, укажите ID торрента.")
+    # Получаем статус всех загружающихся торрентов
+    torrents_status = get_torrents_status()
+    
+    if torrents_status is None:
+        await update.message.reply_text("Нет активных торрентов для загрузки.")
         return
 
-    torrent_id = int(context.args[0])
-    status = get_torrent_status(torrent_id)
-    await update.message.reply_text(f"Статус торрента {torrent_id}: {status['progress']}% | Скорость: {status['rateDownload']:.2f} кБ/с")
+    # Формируем сообщение со статусом каждого торрента
+    message = "Статус загружающихся торрентов:\n"
+    for i, torrent in enumerate(torrents_status, 1):
+        message += f"{i}: {torrent['name']}\n"
+        message += f"   Прогресс: {torrent['progress']:.1f}%\n\n"
+    
+    await update.message.reply_text(message)
 
 def main():
     application = Application.builder().token(BOT_TOKEN).build()

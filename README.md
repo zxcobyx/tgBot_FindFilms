@@ -1,18 +1,25 @@
-# tgBot_FindFilms
+# Бот для автоматической загрузки торрент файлов.
 
-For start bot:
-1. Write terminal - sudo systemctl start transmission-daemon
-2. Write terminal - sudo systemctl status transmission-daemon
-3. python3 main.py
+__For start bot:__
+```python
+python3 main.py
+```
 
-For drop bot:
-1. Write terminal - sudo systemctl stop transmission-daemon
+__For start qBitTorrent:__
+```bash
+qbittorrent-nox -d
+sudo systemctl daemon-reload
+sudo systemctl start qbittorrent-nox
+sudo systemctl status qbittorrent-nox
+```
 
-Add requirements.txt:
-1. pipreqs ./ --ignore .venv --force --encoding=utf-8
+__Add requirements.txt:__
+```bash
+pipreqs ./ --ignore .venv --force --encoding=utf-8
+```
 
 TODO:
-1. Сделать поиск и загрузку magnet-ссылок на Rutor
+1. ~~Сделать поиск и загрузку magnet-ссылок на Rutor~~
 2. Сделать аутентификацию, либо использовать куки с текущим сеансом для стабильной загрузки торрентов. 
 3. Сделать поиск и загрузку magnet-ссылок на Rutracker. 
 4. Сделать автоматическое добавление .torrent в приложение загрузки торрент-файлов. 

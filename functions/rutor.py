@@ -60,13 +60,8 @@ async def search_torrent_rutor(query):
         except (AttributeError, IndexError, ValueError, TypeError):
             continue
 
-    # print(magnet_link)
-
     if results:
         best_torrents = sorted(results, key=lambda x: x['seeds'], reverse=True)[:3]
-
-        # for torrent in best_torrents:
-        #     torrent['link'] = shorten_url(torrent['link'])
             
         return best_torrents
     else:

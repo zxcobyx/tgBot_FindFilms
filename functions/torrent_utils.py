@@ -1,57 +1,42 @@
-import requests
-import aiohttp
-from urllib.parse import urljoin
-from typing import Optional
-from transmission_rpc import Client
-from constants import TORRENT_FOLDER
+import qbittorrentapi as qbt
 
-# Инициализация реального клиента Transmission
-transmission_client = Client(host='localhost', port=9091, username='transmission', password='YourName102')
+# Создаем экземпляр клиента
+client = qbt.Client(host='localhost:8080', username='admin', password='adminadmin')
 
-async def download_torrent_file(url: str) -> Optional[bytes]:
+async def add_torrent_by_url(_urls: list):
     """
-    Асинхронно загружает .torrent файл по указанному URL.
+    Загружает торрент из списка URL в qBittorrent.
     
-    :param url: URL торрент-файла
-    :return: Содержимое торрент-файла или None в случае ошибки
+    :param urls: Список URL-адресов торрент-файлов
+    :return: Сообщение об успешной загрузке или об ошибке
     """
-    # Добавляем протокол и домен, если их нет
-    if not url.startswith(('http://', 'https://')):
-        url = 'https://' + url.lstrip('/')
-    
-    print(url)
-
     try:
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url) as response:
-                if response.status == 200:
-                    return await response.read()
-                else:
-                    print(f"Ошибка при загрузке торрент-файла: HTTP статус {response.status}")
-                    return None
-    except aiohttp.ClientError as e:
-        print(f"Ошибка при загрузке торрент-файла: {e}")
+        print(_urls)
+
+        # Используем метод download для загрузки торрентов
+        result = client.torrents_add(urls=[_urls])
+        print(f"Результат добавления торрента: {result}")
+    except Exception as e:
+        print(f"Произошла ошибка: {str(e)}")
         return None
 
-async def add_torrent(torrent_data: bytes):
+def get_torrents_status():
     """
-    Добавляет торрент в Transmission.
+    Получает статус всех загружающихся торрентов.
     
-    :param torrent_data: Содержимое торрент-файла (bytes)
-    :return: ID добавленного торрента
+    :return: Список словарей с информацией о прогрессе и скорости загрузки для каждого торрента
     """
-    torrent = transmission_client.add_torrent(torrent_data, download_dir=TORRENT_FOLDER)
-    return torrent.id
+    torrents_info = client.torrents_info(status_filter="downloading")  # Получаем информацию о всех торрентах
+    active_torrents = []
 
-def get_torrent_status(torrent_id):
-    """
-    Получает статус торрента.
+    for torrent in torrents_info:
+        active_torrents.append({
+            "name": torrent.name,
+            "progress": torrent.progress * 100
+        })
     
-    :param torrent_id: ID торрента
-    :return: Словарь с информацией о прогрессе и скорости загрузки
-    """
-    torrent = transmission_client.get_torrent(torrent_id)
-    return {
-        "progress": torrent.progress,
-        "rateDownload": torrent.rate_download / 1000  # Конвертируем в кБ/с
-    }
+    if active_torrents:
+        return active_torrents
+    else:
+        print("Нет активных торрентов для загрузки.")
+        return None
