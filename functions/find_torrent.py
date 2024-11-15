@@ -20,7 +20,7 @@ async def find_torrent(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 
         keyboard = [
             button_row,
-            [InlineKeyboardButton("⬅ Назад", callback_data='back_to_start')]    
+            [InlineKeyboardButton("⬅ Назад", callback_data='back_to_start')]
         ]
 
         await update.message.reply_text(
@@ -28,7 +28,14 @@ async def find_torrent(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
             reply_markup=InlineKeyboardMarkup(keyboard)
         )
     else:
-        await update.message.reply_text("Не удалось найти торренты по вашему запросу.")
+        keyboard = [
+            [InlineKeyboardButton("⬅ Назад", callback_data='back_to_start')]
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        await update.message.reply_text(
+            text="Не удалось найти торренты по вашему запросу.",
+            reply_markup=reply_markup
+        )
     
     # best_torrent_rutracker = await search_torrent_rutracker(query)
     # if best_torrent_rutor:
